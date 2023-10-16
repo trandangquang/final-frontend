@@ -1,18 +1,34 @@
-import { Form, Input } from 'antd';
-import React, { useState } from 'react';
+import { Alert, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/image/login.jpg';
+import { useLoginMutation } from '../services/appApi';
+import * as message from '../components/MessageComponent';
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [login, { isError, isSuccess, isLoading, error }] = useLoginMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      message.success()
+      navigate('/');
+    }
+  }, [isSuccess]);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login({ email, password });
+  };
 
   return (
     <div className='absolute w-full h-full flex items-center overflow-hidden'>
       <img className='relative object-cover' src={loginImage} alt='' />
 
-      <div className='absolute flex flex-col items-center bg-white h-[600px] w-[437px] rounded-lg right-4'>
+      <div className='absolute flex flex-col items-center bg-white h-[650px] w-[437px] rounded-lg right-4'>
         <div className='px-8 pt-5 pb-8 items-center justify-center gap-10 flex-col'>
           <h1 className='font-medium font-mono text-4xl text-center'>
             PORSCHE
@@ -20,6 +36,8 @@ const LoginPage = () => {
           <h3 className='font-medium text-2xl leading-8 mt-5 mb-3'>
             Nice to see you.
           </h3>
+
+          {isError && <Alert message={error.data} type='error' showIcon />}
 
           <Form name='login-form' autoComplete='off'>
             <div className='flex flex-col gap-1'>
@@ -73,12 +91,12 @@ const LoginPage = () => {
             <div className='flex justify-center mt-8'>
               <button
                 type='submit'
-                // disabled={isLoading}
+                disabled={isLoading}
                 className='rounded-full text-white bg-black w-full h-[50px] sm:text-xl
                           hover:border-none hover:!text-white hover:!bg-black disabled:bg-slate-900 disabled:text-white disabled:border-none'
-                // onClick={handleLogin}
+                onClick={handleLogin}
               >
-                {/* {isLoading ? 'Logging in ...' : 'Log in now'} */}Log in
+                {isLoading ? 'Logging in ...' : 'Log in now'}
               </button>
             </div>
 

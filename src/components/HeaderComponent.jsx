@@ -1,14 +1,22 @@
-import React from 'react'
-import { Divider } from 'antd';
+import { Button, Divider } from 'antd';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import logo from '../assets/image/logo.webp';
+import Navbar from 'react-bootstrap/Navbar';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/image/logo.webp';
+import { logout } from '../redux/userSlice';
 
 const HeaderComponent = () => {
-   const navigate = useNavigate()
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logout())
+  };
   return (
     <div>
       <div className='w-full h-full p-[2px]'>
@@ -34,20 +42,30 @@ const HeaderComponent = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-              <Nav.Link onClick={() => navigate('/login')}>Login</Nav.Link>
-              <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
-                <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
-                <NavDropdown.Item href='#action/3.2'>
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href='#action/3.3'>
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href='#action/3.4'>
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
+              {!user ? (
+                <Nav.Link onClick={() => navigate('/login')}>Login</Nav.Link>
+              ) : (
+                <NavDropdown title={`${user.email}`} id='basic-nav-dropdown'>
+                  {user.admin ? (
+                    <>
+                      <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                      <NavDropdown.Item>Create Product</NavDropdown.Item>
+                    </>
+                  ) : (
+                    <>
+                      <NavDropdown.Item>Cart</NavDropdown.Item>
+                      <NavDropdown.Item>My orders</NavDropdown.Item>
+                    </>
+                  )}
+
+                  <NavDropdown.Divider />
+                  <div className='text-center'>
+                    <Button type='primary' danger onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </div>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -56,5 +74,4 @@ const HeaderComponent = () => {
   );
 };
 
-
-export default HeaderComponent
+export default HeaderComponent;
