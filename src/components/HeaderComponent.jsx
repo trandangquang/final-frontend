@@ -49,7 +49,7 @@ const HeaderComponent = () => {
                   {user.admin ? (
                     <>
                       <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      <NavDropdown.Item>Create Product</NavDropdown.Item>
+                      <NavDropdown.Item onClick={()=> navigate('/products')}>Create Product</NavDropdown.Item>
                     </>
                   ) : (
                     <>

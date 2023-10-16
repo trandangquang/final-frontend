@@ -1,6 +1,7 @@
-import HomePage from "../pages/HomePage";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
+import HomePage from '../pages/HomePage';
+import LoginPage from '../pages/LoginPage';
+import NewProduct from '../pages/NewProduct';
+import RegisterPage from '../pages/RegisterPage';
 
 export const routes = [
   {
@@ -13,12 +14,11 @@ export const routes = [
   //   page: OrderPage,
   //   isShowHeader: true,
   // },
-  // {
-  //   path: '/products',
-  //   page: ProductPage,
-  //   isShowHeader: true,
-  // },
-
+  {
+    path: '/products',
+    page: NewProduct,
+    isShowHeader: true,
+  },
   {
     path: '/login',
     page: LoginPage,

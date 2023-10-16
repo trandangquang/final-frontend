@@ -18,8 +18,15 @@ export const appApi = createApi({
         body: user,
       }),
     }),
+    createProduct: builder.mutation({
+      query: (product) => ({
+        url:'/products',
+        body: product,
+        method: 'POST'
+      })
+    })
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = appApi;
+export const { useRegisterMutation, useLoginMutation, useCreateProductMutation } = appApi;
 export default appApi
