@@ -1,22 +1,23 @@
+import { RightOutlined } from '@ant-design/icons';
 import { Carousel } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import slide1 from '../assets/image/slide1.jpg';
 import slide2 from '../assets/image/slide2.jpg';
 import slide3 from '../assets/image/slide3.jpg';
 import slide4 from '../assets/image/slide4.jpg';
 import slide5 from '../assets/image/slide5.jpg';
 import axios from '../axios';
-import { updateProducts } from '../redux/productSlice';
-import CardComponent from '../components/CardComponent';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Col, Row } from 'react-bootstrap';
 import categories from '../categories';
+import CardComponent from '../components/CardComponent';
+import { updateProducts } from '../redux/productSlice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const outstandingProducts = products.slice(0, 8);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/products').then(({ data }) => dispatch(updateProducts(data)));
@@ -48,27 +49,32 @@ const HomePage = () => {
           ))}
         </div>
       </div>
-      <div className='recent-products-container container mt-4'>
-        <h2>Categories</h2>
-        <Row>
+      <div className='px-44'>
+        <h2 className='text-center pt-10'>Categories</h2>
+        <div className='grid grid-cols-5 justify-start items-center pt-3 font-normal text-2xl gap-1'>
           {categories.map((category) => (
-            <LinkContainer
-              to={`/category/${category.name.toLocaleLowerCase()}`}
+            <div
+              onClick={() =>
+                navigate(`/category/${category.name.toLocaleLowerCase()}`)
+              }
             >
-              <Col md={4}>
-                <div
-                  style={{
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${category.img})`,
-                    gap: '10px',
-                  }}
-                  className='category-tile'
-                >
-                  {category.name}
+              <div
+                style={{
+                  backgroundImage: `url(${category.img})`,
+                  gap: '10px',
+                }}
+                className='w-[304px] h-[342px] relative '
+              >
+                <div className='absolute bottom-5 left-4 text-white '>
+                  <span className='hover:text-red-700 cursor-pointer'>
+                    <RightOutlined className='text-red-700' />
+                    {category.name}
+                  </span>
                 </div>
-              </Col>
-            </LinkContainer>
+              </div>
+            </div>
           ))}
-        </Row>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
-
 import { Alert } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../axios';
-import { useCreateProductMutation } from '../services/appApi';
+import { useUpdateProductMutation } from '../services/appApi';
 
-function NewProductPage() {
+function EditProductPage() {
+  const { id } = useParams();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -14,11 +14,25 @@ function NewProductPage() {
   const [images, setImages] = useState([]);
   const [imageToRemove, setImageToRemove] = useState(null);
   const navigate = useNavigate();
-  const [createProduct, { isError, error, isLoading, isSuccess }] =
-    useCreateProductMutation();
+  const [updateProduct, { isError, error, isLoading, isSuccess }] =
+    useUpdateProductMutation();
+
+  useEffect(() => {
+    axios
+      .get('/products/' + id)
+      .then(({ data }) => {
+        const product = data.product;
+        setName(product.name);
+        setDescription(product.description);
+        setCategory(product.category);
+        setImages(product.pictures);
+        setPrice(product.price);
+      })
+      .catch((e) => console.log(e));
+  }, [id]);
 
   const handleRemoveImage = (imgObj) => {
-    imageToRemove(imgObj.public_id);
+    setImageToRemove(imgObj.public_id);
     axios
       .delete(`/images/${imgObj.public_id}/`)
       .then((res) => {
@@ -28,6 +42,22 @@ function NewProductPage() {
         );
       })
       .catch((e) => console.log(e));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !description || !price || !category || !images.length) {
+      return alert('All fields cannot be left blank');
+    }
+    updateProduct({ id, name, description, price, category, images }).then(
+      ({ data }) => {
+        if (data.length > 0) {
+          setTimeout(() => {
+            navigate('/');
+          }, 1500);
+        }
+      }
+    );
   };
 
   const handleUploadImage = () => {
@@ -48,43 +78,21 @@ function NewProductPage() {
     widget.open();
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name || !description || !price || !category || !images.length) {
-      return (
-        <Alert
-          message='All fields cannot be left blank'
-          type='warning'
-          showIcon
-        />
-      );
-    }
-    createProduct({ name, description, price, category, images }).then(
-      ({ data }) => {
-        if (data.length > 0) {
-          setTimeout(() => {
-            navigate('/');
-          }, 1500);
-        }
-      }
-    );
-  };
-
   return (
     <div className='px-28 pt-3 grid gap-52 grid-cols-2'>
       <div>
-        <Form className='w-full' onSubmit={handleSubmit}>
-          <h1 className='mt-4'>Create New Product</h1>
+        <Form style={{ width: '100%' }} onSubmit={handleSubmit}>
+          <h1 className='mt-4'>Edit product</h1>
           {isSuccess && (
             <Alert
-              message='The product has been created successfully'
+              message='The product has been updated successfully'
               type='success'
               showIcon
             />
           )}
-          {isError && <Alert message={error.data} type='error' showIcon />}
+          {isError && <Alert variant='danger'>{error.data}</Alert>}
           <Form.Group className='mb-3'>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Product name</Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter product name'
@@ -95,11 +103,11 @@ function NewProductPage() {
           </Form.Group>
 
           <Form.Group className='mb-3'>
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Product description</Form.Label>
             <Form.Control
               as='textarea'
               placeholder='Product description'
-              className='h-[100px]'
+              style={{ height: '100px' }}
               value={description}
               required
               onChange={(e) => setDescription(e.target.value)}
@@ -110,7 +118,7 @@ function NewProductPage() {
             <Form.Label>Price</Form.Label>
             <Form.Control
               type='text'
-              placeholder='Price '
+              placeholder='Price'
               value={price}
               required
               onChange={(e) => setPrice(e.target.value)}
@@ -122,7 +130,7 @@ function NewProductPage() {
             onChange={(e) => setCategory(e.target.value)}
           >
             <Form.Label>Category</Form.Label>
-            <Form.Select>
+            <Form.Select value={category}>
               <option disabled selected>
                 -- Select One Category --
               </option>
@@ -136,12 +144,14 @@ function NewProductPage() {
           </Form.Group>
 
           <Form.Group className='mb-3 text-center'>
-            <Button onClick={handleUploadImage}>Upload Images</Button>
+            <Button type='button' onClick={handleUploadImage}>
+              Upload Images
+            </Button>
           </Form.Group>
 
           <Form.Group className='text-center'>
             <Button type='submit' disabled={isLoading || isSuccess}>
-              Create Product
+              Update Product
             </Button>
           </Form.Group>
         </Form>
@@ -167,4 +177,4 @@ function NewProductPage() {
   );
 }
 
-export default NewProductPage;
+export default EditProductPage;

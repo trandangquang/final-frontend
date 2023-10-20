@@ -107,7 +107,7 @@ const HeaderComponent = () => {
                     )}
 
                     <NavDropdown.Divider />
-                    <div className='text-center'>
+                    <div className='text-center bg-'>
                       <Button type='primary' danger onClick={handleLogout}>
                         Logout
                       </Button>
