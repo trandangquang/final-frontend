@@ -8,6 +8,7 @@ import ProductPage from '../pages/ProductPage';
 import RegisterPage from '../pages/RegisterPage';
 import EditProductPage from '../pages/EditProductPage';
 import CategoryPage from '../pages/CategoryPage'
+import NotFoundPage from '../pages/NotFoundPage';
 
 export const routes = [
   {
@@ -60,10 +61,9 @@ export const routes = [
     page: CategoryPage,
     isShowHeader: true,
   },
-
-  // {
-  //   path: '*',
-  //   page: NotFoundPage,
-  //   isShowHeader: false,
-  // },
+  {
+    path: '*',
+    page: NotFoundPage,
+    isShowHeader: false,
+  },
 ];

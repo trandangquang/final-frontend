@@ -130,16 +130,16 @@ function EditProductPage() {
             onChange={(e) => setCategory(e.target.value)}
           >
             <Form.Label>Category</Form.Label>
-            <Form.Select value={category}>
+            <Form.Select >
               <option disabled selected>
                 -- Select One Category --
               </option>
               <option value='718'>718</option>
               <option value='911'>911</option>
-              <option value='Taycan'>Taycan</option>
-              <option value='Panamera'>Panamera</option>
-              <option value='Macan'>Macan</option>
-              <option value='Cayenne'>Cayenne</option>
+              <option value='taycan'>Taycan</option>
+              <option value='panamera'>Panamera</option>
+              <option value='macan'>Macan</option>
+              <option value='cayenne'>Cayenne</option>
             </Form.Select>
           </Form.Group>
 

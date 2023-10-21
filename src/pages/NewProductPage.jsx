@@ -1,4 +1,3 @@
-
 import { Alert } from 'antd';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
@@ -18,7 +17,7 @@ function NewProductPage() {
     useCreateProductMutation();
 
   const handleRemoveImage = (imgObj) => {
-    imageToRemove(imgObj.public_id);
+    setImageToRemove(imgObj.public_id);
     axios
       .delete(`/images/${imgObj.public_id}/`)
       .then((res) => {
@@ -122,16 +121,16 @@ function NewProductPage() {
             onChange={(e) => setCategory(e.target.value)}
           >
             <Form.Label>Category</Form.Label>
-            <Form.Select>
+            <Form.Select >
               <option disabled selected>
                 -- Select One Category --
               </option>
               <option value='718'>718</option>
               <option value='911'>911</option>
-              <option value='Taycan'>Taycan</option>
-              <option value='Panamera'>Panamera</option>
-              <option value='Macan'>Macan</option>
-              <option value='Cayenne'>Cayenne</option>
+              <option value='taycan'>Taycan</option>
+              <option value='panamera'>Panamera</option>
+              <option value='macan'>Macan</option>
+              <option value='cayenne'>Cayenne</option>
             </Form.Select>
           </Form.Group>
 

@@ -36,12 +36,6 @@ const CardComponent = ({ _id, category, name, price, pictures }) => {
           >
             {price}
           </div>
-          <div
-            onClick={() => navigate(`/product/${_id}`)}
-            className='hover:text-red-700 text-2xl'
-          >
-            {category}
-          </div>
         </div>
       </Card>
     </div>
