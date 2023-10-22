@@ -9,6 +9,7 @@ import RegisterPage from '../pages/RegisterPage';
 import EditProductPage from '../pages/EditProductPage';
 import CategoryPage from '../pages/CategoryPage'
 import NotFoundPage from '../pages/NotFoundPage';
+import AllProductsPage from '../pages/AllProductsPage';
 
 export const routes = [
   {
@@ -59,6 +60,11 @@ export const routes = [
   {
     path: '/category/:category',
     page: CategoryPage,
+    isShowHeader: true,
+  },
+  {
+    path: '/all-product',
+    page: AllProductsPage,
     isShowHeader: true,
   },
   {

@@ -33,7 +33,7 @@ function CategoryPage() {
 
   return (
     <div className='px-44 pt-4'>
-      <div className='flex w-full h-[100px] bg-slate-500 justify-center	items-center text-white'>
+      <div className='flex w-full h-[100px] bg-slate-300 justify-center	items-center text-black'>
         <h1 >
           {category.charAt(0).toUpperCase() + category.slice(1)}
         </h1>
