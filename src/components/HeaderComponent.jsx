@@ -1,10 +1,8 @@
-import { Button, Divider, Dropdown } from 'antd';
+import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Badge, Button, Divider, Dropdown } from 'antd';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Navbar from 'react-bootstrap/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import caymanbg from '../assets/image/718caymanbg.jpg';
@@ -427,7 +425,7 @@ const HeaderComponent = () => {
       axios.post(`/users/${user._id}/updateNotifications`);
   };
   return (
-    <div className='px-44'>
+    <div className='px-44 '>
       <div className='w-full h-full p-[2px]'>
         <Divider>
           <img
@@ -441,7 +439,7 @@ const HeaderComponent = () => {
         </Divider>
       </div>
 
-      <div className='flex flex-row justify-between bg-white h-full w-full items-center'>
+      <div className='flex flex-row justify-between h-full w-full items-center'>
         <Dropdown
           menu={{
             items,
@@ -455,35 +453,35 @@ const HeaderComponent = () => {
           </div>
         </Dropdown>
 
-        <Navbar expand='lg' className='bg-body-tertiary'>
-          <Container>
-            <Navbar.Toggle aria-controls='basic-navbar-nav' />
-            <Navbar.Collapse id='basic-navbar-nav'>
-              <Nav className='ms-auto'>
-                {!user ? (
-                  <Nav.Link onClick={() => navigate('/login')}>Login</Nav.Link>
-                ) : (
-                  <>
-                    <Nav.Link onClick={() => navigate('/cart')}>
-                      <i className='fas fa-shopping-cart'></i>
+        <div className=''>
+          <div>
+            <div className='flex items-center '>
+              {!user ? (
+                <span
+                  className='cursor-pointer'
+                  onClick={() => navigate('/login')}
+                >
+                  Login
+                </span>
+              ) : (
+                <>
+                  {user && !user.isAdmin && (
+                    <div onClick={() => navigate('/cart')}>
                       {user?.cart.count > 0 && (
-                        <span className='badge badge-warning' id='cartcount'>
-                          {user.cart.count}
-                        </span>
+                        <Badge count={user.cart.count}>
+                          <ShoppingCartOutlined className='text-3xl cursor-pointer' />
+                        </Badge>
                       )}
-                    </Nav.Link>
-                    <Nav.Link
-                    className='relative'
-                      // style={{ position: 'relative' }}
-                      onClick={handleToggleNotifications}
-                    >
-                      <i
-                        className='fas fa-bell'
-                        ref={bellRef}
-                        data-count={unreadNotifications || null}
-                      ></i>
-                    </Nav.Link>
-
+                    </div>
+                  )}
+                  <div className='relative' onClick={handleToggleNotifications}>
+                    <BellOutlined
+                      className='text-2xl pl-3'
+                      ref={bellRef}
+                      data-count={unreadNotifications || null}
+                    />
+                  </div>
+                  <div>
                     <NavDropdown title={`${user.email}`}>
                       {user.isAdmin ? (
                         <>
@@ -504,23 +502,25 @@ const HeaderComponent = () => {
                           <NavDropdown.Item onClick={() => navigate('/orders')}>
                             My orders
                           </NavDropdown.Item>
+                          <NavDropdown.Item onClick={() => navigate('/profile')}>
+                            My Profile
+                          </NavDropdown.Item>
                         </>
                       )}
 
                       <NavDropdown.Divider />
-                      <div className='text-center bg-'>
+                      <div className='text-center'>
                         <Button type='primary' danger onClick={handleLogout}>
                           Logout
                         </Button>
                       </div>
                     </NavDropdown>
-                  </>
-                )}
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
           <div
-            className='notifications-container'
             ref={notificationRef}
             style={{
               position: 'absolute',
@@ -542,10 +542,10 @@ const HeaderComponent = () => {
                 </p>
               ))
             ) : (
-              <p>No notifcations yet</p>
+              <p>No notification</p>
             )}
           </div>
-        </Navbar>
+        </div>
       </div>
     </div>
   );
