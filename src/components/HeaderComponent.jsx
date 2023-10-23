@@ -466,12 +466,10 @@ const HeaderComponent = () => {
               ) : (
                 <>
                   {user && !user.isAdmin && (
-                    <div onClick={() => navigate('/cart')}>
-                      {user?.cart.count > 0 && (
+                    <div onClick={() => navigate('/cart')}>                  
                         <Badge count={user.cart.count}>
                           <ShoppingCartOutlined className='text-3xl cursor-pointer' />
                         </Badge>
-                      )}
                     </div>
                   )}
                   <div className='relative' onClick={handleToggleNotifications}>

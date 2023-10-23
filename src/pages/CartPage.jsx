@@ -3,13 +3,12 @@ import { loadStripe } from '@stripe/stripe-js';
 import React from 'react';
 import { Alert, Col, Container, Row, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import CheckoutFormComponent from '../components/CheckOutComponent';
+import CheckOutFormComponent from '../components/CheckOutComponent';
 import {
   useIncreaseCartProductMutation,
   useDecreaseCartProductMutation,
   useRemoveFromCartMutation,
 } from '../services/appApi';
-
 
 const stripePromise = loadStripe(
   'pk_test_51M55BKFOmzwymsyyLdtR4z7PB2ed2hUiQNncrWfCczDxyq0A1gtUYOOTPb1oFFIWBhOv5qrt4Y03bKf6wYdOswwe005QTRjG1x'
@@ -41,7 +40,7 @@ function CartPage() {
             </Alert>
           ) : (
             <Elements stripe={stripePromise}>
-              <CheckoutFormComponent />
+              <CheckOutFormComponent />
             </Elements>
           )}
         </Col>
@@ -59,7 +58,6 @@ function CartPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* loop through cart products */}
                   {cart.map((item) => (
                     <tr>
                       <td>&nbsp;</td>
@@ -87,7 +85,7 @@ function CartPage() {
                           alt=''
                         />
                       </td>
-                      <td>${item.price}</td>
+                      <td>{item.price}$</td>
                       <td>
                         <span className='quantity-indicator'>
                           <i
@@ -113,13 +111,13 @@ function CartPage() {
                           ></i>
                         </span>
                       </td>
-                      <td>${item.price * user.cart[item._id]}</td>
+                      <td>{item.price * user.cart[item._id]}$</td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
               <div>
-                <h3 className='h4 pt-4'>Total: ${user.cart.total}</h3>
+                <h3 className='h4 pt-4'>Total: {user.cart.total}$</h3>
               </div>
             </>
           </Col>

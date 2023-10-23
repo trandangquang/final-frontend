@@ -12,7 +12,7 @@ import categories from '../categories';
 const HomePage = () => {
   const navigate = useNavigate();
   return (
-    <div>
+    <div className='pt-3'>
       <Carousel autoplay>
         <div>
           <img className='w-full' src={slide1} alt='' />
