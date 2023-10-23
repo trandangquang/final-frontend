@@ -34,15 +34,13 @@ function CategoryPage() {
   return (
     <div className='px-44 pt-4'>
       <div className='flex w-full h-[100px] bg-slate-300 justify-center	items-center text-black'>
-        <h1 >
-          {category.charAt(0).toUpperCase() + category.slice(1)}
-        </h1>
+        <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1>
       </div>
 
       {productsCategory.length === 0 ? (
         <h1>No Products</h1>
       ) : (
-        <div className='pt-4'>
+        <div className='grid grid-cols-4 justify-start items-center pt-3 font-normal text-2xl gap-1'>
           {productsCategory.map((productCategory) => (
             <CardComponent {...productCategory} />
           ))}

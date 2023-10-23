@@ -32,7 +32,7 @@ const HomePage = () => {
       </Carousel>
 
       <div className='px-44'>
-        <h2 className='text-center pt-10'>Models</h2>
+        <h2 className='text-center pt-10 cursor-pointer' onClick={()=> navigate('/all-product')}>Models</h2>
         <div className='grid grid-cols-5 justify-start items-center pt-3 font-normal text-2xl gap-1'>
           {categories.map((category) => (
             <div
