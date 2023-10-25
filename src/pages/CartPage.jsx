@@ -14,7 +14,7 @@ import {
 } from '../services/appApi';
 
 const stripePromise = loadStripe(
-  'pk_test_51M55BKFOmzwymsyyLdtR4z7PB2ed2hUiQNncrWfCczDxyq0A1gtUYOOTPb1oFFIWBhOv5qrt4Y03bKf6wYdOswwe005QTRjG1x'
+  'pk_test_51O54FuJumoX13lSi5n2Hm65DplfJksRtCE3pevKgmUBUzllPDzQ4tp9a4ftyvjyKn8Qvho5Nnzsn6PmyO1XT715H00Z4aAQFx9'
 );
 
 const CartPage = () => {
@@ -35,14 +35,21 @@ const CartPage = () => {
 
   const handleDecrease = (product) => {
     const quantity = user.cart.count;
-    if (quantity <= 0) return alert('Cannot be reduced anymore');
+    if (quantity <= 0) {
+      <Alert
+        className='text-center text-lg'
+        message='Cannot be reduced anymore'
+        type='warning'
+      />;
+    }
     decreaseCart(product);
   };
+  console.log('user.cart.total', user.cart.total);
 
   return (
     <div className='min-h-[95vh] px-44'>
       <div className='grid gap-44 grid-cols-2'>
-        <div className='bg-slate-500'>
+        <div className=''>
           <h1 className='pt-2'>Cart</h1>
           {cart.length === 0 ? (
             <Alert
