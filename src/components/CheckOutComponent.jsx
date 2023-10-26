@@ -1,24 +1,54 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React, { useState } from 'react';
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useCreateOrderMutation } from '../services/appApi';
+import axios from '../axios';
+import {
+  useCreateOrderMutation,
+  useUpdateUserMutation,
+} from '../services/appApi';
 
 function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const user = useSelector((state) => state.user);
+  const id = user._id;
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState('');
   const [createOrder, { isLoading, isError, isSuccess }] =
     useCreateOrderMutation();
+  const [name, setName] = useState();
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [paying, setPaying] = useState(false);
+  const [updateUser] = useUpdateUserMutation();
+
+  useEffect(() => {
+    axios
+      .get('/users/' + id)
+      .then(({ data }) => {
+        const user = data.user;
+        setName(user.name);
+        setAddress(user.address);
+        setPhone(user.phone);
+      })
+      .catch((e) => console.log(e));
+  }, [id]);
 
   async function handlePay(e) {
     e.preventDefault();
+    if (!name || !address || !phone) {
+      return alert('All fields cannot be left blank');
+    }
+    updateUser({ id, name, address, phone }).then(({ data }) => {
+      if (data) {
+        setTimeout(() => {
+          // navigate('/');
+        }, 1000);
+      }
+    });
     if (!stripe || !elements || user.cart.count <= 0) return;
     setPaying(true);
     const { client_secret } = await fetch(
@@ -46,7 +76,7 @@ function CheckoutForm() {
             setAlertMessage(`Payment ${paymentIntent.status}`);
             setTimeout(() => {
               navigate('/orders');
-            }, 3000);
+            }, 2000);
           }
         }
       );
@@ -54,23 +84,26 @@ function CheckoutForm() {
   }
 
   return (
-    <Col className='cart-payment-container'>
+    <div>
       <Form onSubmit={handlePay}>
-        <Row>
-          {alertMessage && <Alert>{alertMessage}</Alert>}
-          <Col md={6}>
+        <div>
+          {alertMessage && (
+            <Alert message={alertMessage} type='success' showIcon />
+          )}
+          <div>
             <Form.Group className='mb-3'>
-              <Form.Label>First Name</Form.Label>
+              <Form.Label className='font-semibold'>Name</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='First Name'
-                value={user.name}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-          </Col>
-          <Col md={6}>
+          </div>
+          <div>
             <Form.Group className='mb-3'>
-              <Form.Label>Email</Form.Label>
+              <Form.Label className='font-semibold'>Email</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Email'
@@ -78,45 +111,49 @@ function CheckoutForm() {
                 disabled
               />
             </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={7}>
+          </div>
+        </div>
+        <div>
+          <div>
             <Form.Group className='mb-3'>
-              <Form.Label>Address</Form.Label>
+              <Form.Label className='font-semibold'>Address</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Address'
-                value={user.address}
+                value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 required
               />
             </Form.Group>
-          </Col>
-          <Col md={5}>
+          </div>
+          <div>
             <Form.Group className='mb-3'>
-              <Form.Label>Phone</Form.Label>
+              <Form.Label className='font-semibold'>Phone</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Phone'
-                value={user.phone}
+                value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
               />
             </Form.Group>
-          </Col>
-        </Row>
-        <label htmlFor='card-element'>Card</label>
+          </div>
+        </div>
+        <label className='font-semibold pb-2' htmlFor='card-element'>
+          Card
+        </label>
         <CardElement id='card-element' />
-        <Button
-          className='mt-3'
-          type='submit'
-          disabled={user.cart.count <= 0 || paying || isSuccess}
-        >
-          {paying ? 'Processing...' : 'Pay'}
-        </Button>
+        <div className='text-center'>
+          <Button
+            className='mt-3'
+            type='submit'
+            disabled={user.cart.count <= 0 || paying || isSuccess}
+          >
+            {paying ? 'Processing...' : 'Pay'}
+          </Button>
+        </div>
       </Form>
-    </Col>
+    </div>
   );
 }
 
