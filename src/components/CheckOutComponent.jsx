@@ -4,17 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from '../axios';
+// import axios from '../axios';
 import {
   useCreateOrderMutation,
-  useUpdateUserMutation,
+  // useUpdateUserMutation,
 } from '../services/appApi';
 
 function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const user = useSelector((state) => state.user);
-  const id = user._id;
+  // const id = user._id;
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState('');
   const [createOrder, { isLoading, isError, isSuccess }] =
@@ -23,32 +23,32 @@ function CheckoutForm() {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [paying, setPaying] = useState(false);
-  const [updateUser] = useUpdateUserMutation();
+  // const [updateUser] = useUpdateUserMutation();
 
-  useEffect(() => {
-    axios
-      .get('/users/' + id)
-      .then(({ data }) => {
-        const user = data.user;
-        setName(user.name);
-        setAddress(user.address);
-        setPhone(user.phone);
-      })
-      .catch((e) => console.log(e));
-  }, [id]);
+  // useEffect(() => {
+  //   axios
+  //     .get('/users/' + id)
+  //     .then(({ data }) => {
+  //       const user = data.user;
+  //       setName(user.name);
+  //       setAddress(user.address);
+  //       setPhone(user.phone);
+  //     })
+  //     .catch((e) => console.log(e));
+  // }, [id]);
 
   async function handlePay(e) {
     e.preventDefault();
-    if (!name || !address || !phone) {
-      return alert('All fields cannot be left blank');
-    }
-    updateUser({ id, name, address, phone }).then(({ data }) => {
-      if (data) {
-        setTimeout(() => {
-          // navigate('/');
-        }, 1000);
-      }
-    });
+    // if (!name || !address || !phone) {
+    //   return alert('All fields cannot be left blank');
+    // }
+    // updateUser({ id, name, address, phone }).then(({ data }) => {
+    //   if (data) {
+    //     setTimeout(() => {
+    //       // navigate('/');
+    //     }, 1000);
+    //   }
+    // });
     if (!stripe || !elements || user.cart.count <= 0) return;
     setPaying(true);
     const { client_secret } = await fetch(
@@ -70,7 +70,7 @@ function CheckoutForm() {
     setPaying(false);
 
     if (paymentIntent) {
-      createOrder({ userId: user._id, cart: user.cart, address, phone }).then(
+      createOrder({ owner: user._id, cart: user.cart, address, phone }).then(
         (res) => {
           if (!isLoading && !isError) {
             setAlertMessage(`Payment ${paymentIntent.status}`);
@@ -81,6 +81,7 @@ function CheckoutForm() {
         }
       );
     }
+    console.log('userId',  user._id);
   }
 
   return (
@@ -96,7 +97,7 @@ function CheckoutForm() {
               <Form.Control
                 type='text'
                 placeholder='First Name'
-                value={name}
+                value={user.name}
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
@@ -158,3 +159,4 @@ function CheckoutForm() {
 }
 
 export default CheckoutForm;
+

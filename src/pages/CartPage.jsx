@@ -44,13 +44,12 @@ const CartPage = () => {
     }
     decreaseCart(product);
   };
-  console.log('user.cart.total', user.cart.total);
-
+  
   return (
     <div className='min-h-[95vh] px-44'>
       <div className='grid gap-44 grid-cols-2'>
         <div className=''>
-          <h1 className='pt-2'>Cart</h1>
+          <h1 className='pt-2 text-center'>Cart</h1>
           {cart.length === 0 ? (
             <Alert
               className='text-center text-lg'
