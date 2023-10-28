@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Container, Table } from 'react-bootstrap';
+import { Badge, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import axios from '../axios';
 import LoadingComponent from '../components/LoadingComponent';
@@ -27,17 +27,17 @@ function OrderPage() {
     return <LoadingComponent />;
   }
 
-  // if (orders.length === 0) {
-  //   return <h1 className='text-center pt-3'>No orders yet</h1>;
-  // }
+  if (orders.length === 0) {
+    return <h1 className='text-center pt-3'>Currently there are no orders</h1>;
+  }
 
   return (
-    <Container>
+    <div className='px-44'>
       <h1 className='text-center'>Your orders</h1>
       <Table responsive striped bordered hover>
         <thead>
           <tr>
-            <th>#</th>
+            <th>Id</th>
             <th>Status</th>
             <th>Date</th>
             <th>Total</th>
@@ -58,12 +58,12 @@ function OrderPage() {
                 </Badge>
               </td>
               <td>{order.date}</td>
-              <td>${order.total}</td>
+              <td>{order.total}$</td>
             </tr>
           ))}
         </tbody>
       </Table>
-    </Container>
+    </div>
   );
 }
 
