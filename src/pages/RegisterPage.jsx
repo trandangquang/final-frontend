@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import loginImage from '../assets/image/login.jpg';
+import { GoogleOutlined } from '@ant-design/icons';
 import { Alert, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signUpWithGoogle } from '../Firebase';
+import loginImage from '../assets/image/login.jpg';
+import * as message from '../components/MessageComponent';
 import { useRegisterMutation } from '../services/appApi';
-import * as message from '../components/MessageComponent'
 
 const RegisterPage = () => {
-  const navigate = useNavigate()
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [register, {error, isLoading, isError, isSuccess}] = useRegisterMutation()
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [register, { error, isLoading, isError, isSuccess }] =
+    useRegisterMutation();
 
-    useEffect(() => {
-      if (isSuccess) {
-        message.success();
-        navigate('/login');
-      }
-    }, [isSuccess]);
-
-    const handleRegister = (e) => {
-      e.preventDefault()
-      register({name, email, password})
+  useEffect(() => {
+    if (isSuccess) {
+      message.success();
+      navigate('/login');
     }
+  }, [isSuccess]);
+
+  const handleRegister = () => {
+    register({ name, email, password });
+  };
 
   return (
     <div className='absolute w-full h-full flex items-center overflow-hidden'>
@@ -38,7 +40,11 @@ const RegisterPage = () => {
           </h3>
           {isError && <Alert message={error.data} type='error' showIcon />}
 
-          <Form name='register-form' autoComplete='off'>
+          <Form
+            name='register-form'
+            autoComplete='off'
+            onFinish={handleRegister}
+          >
             <div className='flex flex-col gap-1'>
               <span className='font-semibold'>Name</span>
 
@@ -114,7 +120,6 @@ const RegisterPage = () => {
                 disabled={isLoading}
                 className='rounded-full text-white bg-black w-full h-[50px] sm:text-xl
                           hover:border-none hover:!text-white hover:!bg-black disabled:bg-slate-900 disabled:text-white disabled:border-none'
-                onClick={handleRegister}
               >
                 {isLoading ? 'Registering...' : 'Register now'}
               </button>
@@ -127,16 +132,22 @@ const RegisterPage = () => {
               </span>
             </div>
             <p
-              className='underline underline-offset-2 mr-1 cursor-pointer'
+              className='underline underline-offset-2 mr-1 cursor-pointer text-center'
               onClick={() => navigate('/login')}
             >
               Back to Login page
             </p>
           </Form>
+          <div className='text-center'>
+            <button onClick={signUpWithGoogle}>
+              <GoogleOutlined />
+              Sign In With Google
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default RegisterPage
+export default RegisterPage;

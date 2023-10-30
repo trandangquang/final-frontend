@@ -1,4 +1,4 @@
-import { Alert } from 'antd';
+import { Alert, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -68,12 +68,7 @@ const ProfilePage = () => {
 
             <Form.Group className='mb-3'>
               <Form.Label className='font-medium'>User Email</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Your email'
-                value={user.email}
-                disabled
-              />
+              <Input placeholder='Your email' value={user.email} disabled />
             </Form.Group>
 
             <Form.Group className='mb-3'>

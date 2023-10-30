@@ -1,10 +1,11 @@
+import { GoogleOutlined } from '@ant-design/icons';
 import { Alert, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signInWithGoogle } from '../Firebase';
 import loginImage from '../assets/image/login.jpg';
-import { useLoginMutation } from '../services/appApi';
 import * as message from '../components/MessageComponent';
-
+import { useLoginMutation } from '../services/appApi';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -14,13 +15,12 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      message.success()
+      message.success();
       navigate('/');
     }
   }, [isSuccess]);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = () => {
     login({ email, password });
   };
 
@@ -28,7 +28,7 @@ const LoginPage = () => {
     <div className='absolute w-full h-full flex items-center overflow-hidden'>
       <img className='relative object-cover' src={loginImage} alt='' />
 
-      <div className='absolute flex flex-col items-center bg-white h-[650px] w-[437px] rounded-lg right-4'>
+      <div className='absolute flex flex-col items-center bg-white h-[680px] w-[437px] rounded-lg right-4'>
         <div className='px-8 pt-5 pb-8 items-center justify-center gap-10 flex-col'>
           <h1 className='font-medium font-mono text-4xl text-center'>
             PORSCHE
@@ -39,7 +39,7 @@ const LoginPage = () => {
 
           {isError && <Alert message={error.data} type='error' showIcon />}
 
-          <Form name='login-form' autoComplete='off'>
+          <Form name='login-form' autoComplete='off' onFinish={handleLogin}>
             <div className='flex flex-col gap-1'>
               <span className='font-semibold'>Porsche ID (E-mail-Address)</span>
 
@@ -94,7 +94,6 @@ const LoginPage = () => {
                 disabled={isLoading}
                 className='rounded-full text-white bg-black w-full h-[50px] sm:text-xl
                           hover:border-none hover:!text-white hover:!bg-black disabled:bg-slate-900 disabled:text-white disabled:border-none'
-                onClick={handleLogin}
               >
                 {isLoading ? 'Logging in ...' : 'Log in now'}
               </button>
@@ -116,6 +115,12 @@ const LoginPage = () => {
               to discover the digital world of Porsche.
             </p>
           </Form>
+          <div className='text-center'>
+            <button onClick={signInWithGoogle}>
+              <GoogleOutlined />
+              Sign In With Google
+            </button>
+          </div>
         </div>
       </div>
     </div>

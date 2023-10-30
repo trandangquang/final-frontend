@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteProductMutation } from '../services/appApi';
 import PaginationComponent from './PaginationComponent';
-import './product.scss'
+import './product.scss';
 
 const ProductComponent = () => {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const ProductComponent = () => {
         </td>
       </tr>
     );
-  }
+  };
 
   return (
     <Table striped bordered hover responsive>
@@ -86,6 +86,6 @@ const ProductComponent = () => {
       </tbody>
     </Table>
   );
-}
+};
 
 export default ProductComponent;
