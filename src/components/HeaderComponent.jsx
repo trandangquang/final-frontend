@@ -1,7 +1,6 @@
-import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge, Button, Divider, Dropdown } from 'antd';
-import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +31,7 @@ import porschebgboxster from '../assets/image/porsche-bg.jpg';
 import styleedition from '../assets/image/style-edition-718.png';
 import taycancross from '../assets/image/taycan-cross.png';
 import taycan from '../assets/image/taycan.png';
-import { logout, resetNotifications } from '../redux/userSlice';
+import { logout } from '../redux/userSlice';
 
 const items = [
   {
@@ -402,28 +401,12 @@ const HeaderComponent = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const bellRef = useRef(null);
-  const notificationRef = useRef(null);
-  const [bellPos, setBellPos] = useState({});
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
   };
-  const unreadNotifications = user?.notifications?.reduce((acc, current) => {
-    if (current.status === 'unread') return acc + 1;
-    return acc;
-  }, 0);
 
-  const handleToggleNotifications = () => {
-    const position = bellRef.current.getBoundingClientRect();
-    setBellPos(position);
-    notificationRef.current.style.display =
-      notificationRef.current.style.display === 'block' ? 'none' : 'block';
-    dispatch(resetNotifications());
-    if (unreadNotifications > 0)
-      axios.post(`/users/${user._id}/updateNotifications`);
-  };
   return (
     <div className='px-44 '>
       <div className='w-full h-full p-[2px]'>
@@ -466,19 +449,12 @@ const HeaderComponent = () => {
               ) : (
                 <>
                   {user && !user.isAdmin && (
-                    <div onClick={() => navigate('/cart')}>                  
-                        <Badge count={user.cart.count}>
-                          <ShoppingCartOutlined className='text-3xl cursor-pointer' />
-                        </Badge>
+                    <div onClick={() => navigate('/cart')}>
+                      <Badge count={user.cart.count}>
+                        <ShoppingCartOutlined className='text-3xl cursor-pointer' />
+                      </Badge>
                     </div>
                   )}
-                  <div className='relative' onClick={handleToggleNotifications}>
-                    <BellOutlined
-                      className='text-2xl pl-3'
-                      ref={bellRef}
-                      data-count={unreadNotifications || null}
-                    />
-                  </div>
                   <div>
                     <NavDropdown title={`${user.email}`}>
                       {user.isAdmin ? (
@@ -500,7 +476,9 @@ const HeaderComponent = () => {
                           <NavDropdown.Item onClick={() => navigate('/orders')}>
                             My orders
                           </NavDropdown.Item>
-                          <NavDropdown.Item onClick={() => navigate('/profile')}>
+                          <NavDropdown.Item
+                            onClick={() => navigate('/profile')}
+                          >
                             My Profile
                           </NavDropdown.Item>
                         </>
@@ -517,31 +495,6 @@ const HeaderComponent = () => {
                 </>
               )}
             </div>
-          </div>
-          <div
-            ref={notificationRef}
-            style={{
-              position: 'absolute',
-              top: bellPos.top + 30,
-              left: bellPos.left,
-              display: 'none',
-            }}
-          >
-            {user?.notifications > 0 ? (
-              user?.notifications.map((notification) => (
-                <p className={`notification-${notification.status}`}>
-                  {notification.message}
-                  <br />
-                  <span>
-                    {notification.time.split('T')[0] +
-                      ' ' +
-                      notification.time.split('T')[1]}
-                  </span>
-                </p>
-              ))
-            ) : (
-              <p>No notification</p>
-            )}
           </div>
         </div>
       </div>
