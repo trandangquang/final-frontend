@@ -88,7 +88,7 @@ const OrderComponent = () => {
   }
 
   return (
-    <>
+    <div>
       <Table responsive striped bordered hover>
         <thead>
           <tr>
@@ -133,7 +133,7 @@ const OrderComponent = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
 

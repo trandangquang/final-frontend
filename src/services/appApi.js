@@ -11,6 +11,13 @@ export const appApi = createApi({
         body: user,
       }),
     }),
+    registerWithGoogle: builder.mutation({
+      query: (user) => ({
+        url: '/users/register-with-google',
+        method: 'POST',
+        body: user,
+      }),
+    }),
     login: builder.mutation({
       query: (user) => ({
         url: '/users/login',
@@ -18,6 +25,15 @@ export const appApi = createApi({
         body: user,
       }),
     }),
+
+    loginWithGoogle: builder.mutation({
+      query: (user) => ({
+        url: '/users/login-with-google',
+        method: 'POST',
+        body: user,
+      }),
+    }),
+
     updateUser: builder.mutation({
       query: (user) => ({
         url: `/users/${user.id}`,
@@ -102,6 +118,8 @@ export const {
   useCreateOrderMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useLoginWithGoogleMutation,
+  useRegisterWithGoogleMutation
 } = appApi;
 export default appApi;

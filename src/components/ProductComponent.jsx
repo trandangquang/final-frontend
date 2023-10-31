@@ -80,7 +80,7 @@ const ProductComponent = () => {
           data={products}
           RenderComponent={TableRow}
           pageLimit={1}
-          dataLimit={5}
+          dataLimit={2}
           tablePagination={true}
         />
       </tbody>
