@@ -2,16 +2,18 @@ import { Alert, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../axios';
 import { useUpdateUserMutation } from '../services/appApi';
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user);
-  const id = user._id;
+  const { id } = useParams();
+
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
   const [updateUser, { isLoading, error, isSuccess, isError }] =
     useUpdateUserMutation();
@@ -22,6 +24,7 @@ const ProfilePage = () => {
       .then(({ data }) => {
         const user = data.user;
         setName(user.name);
+        setEmail(user.email)
         setAddress(user.address);
         setPhone(user.phone);
       })
@@ -68,7 +71,7 @@ const ProfilePage = () => {
 
             <Form.Group className='mb-3'>
               <Form.Label className='font-medium'>User Email</Form.Label>
-              <Input placeholder='Your email' value={user.email} disabled />
+              <Input placeholder='Your email' value={email} disabled />
             </Form.Group>
 
             <Form.Group className='mb-3'>

@@ -69,7 +69,7 @@ export const routes = [
     isShowHeader: true,
   },
   {
-    path: '/profile',
+    path: 'user/:id/profile',
     page: ProfilePage,
     isShowHeader: true,
   },

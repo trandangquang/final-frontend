@@ -57,7 +57,6 @@ export const appApi = createApi({
         method: 'DELETE',
       }),
     }),
-
     updateProduct: builder.mutation({
       query: (product) => ({
         url: `/products/${product.id}`,
