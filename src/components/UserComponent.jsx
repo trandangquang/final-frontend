@@ -13,10 +13,10 @@ const UserComponent = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
 
-
-
-  const confirm = (id) => {
-    // deleteProduct({ product_id: id, user_id: user._id });
+  const confirm = (_id) => {
+    axios.delete(`users/${_id}`).then(({data})=> {
+      console.log('data', data)
+    })
   };
   const cancel = (id) => {
     console.log(id);
@@ -58,7 +58,7 @@ const UserComponent = () => {
             <Popconfirm
               title='Delete the product'
               description='Are you sure to delete product?'
-              onConfirm={() => confirm(_id, users._id)}
+              onConfirm={()=>confirm(_id)}
               onCancel={cancel}
               okText='Yes'
               cancelText='No'

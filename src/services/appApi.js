@@ -119,6 +119,6 @@ export const {
   useUpdateProductMutation,
   useUpdateUserMutation,
   useLoginWithGoogleMutation,
-  useRegisterWithGoogleMutation
+  useRegisterWithGoogleMutation,
 } = appApi;
 export default appApi;
