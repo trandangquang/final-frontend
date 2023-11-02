@@ -3,15 +3,19 @@ import { Nav, Tab, Col, Row } from 'react-bootstrap';
 import UserComponent from '../components/UserComponent'
 import ProductComponent from '../components/ProductComponent';
 import OrderComponent from '../components/OrderComponent';
+import SummaryComponent from '../components/SummaryComponent';
 
 
 function AdminDashBoardPage() {
   return (
     <div className='px-44 pt-4'>
-      <Tab.Container defaultActiveKey='products'>
+      <Tab.Container defaultActiveKey='summary'>
         <Row>
           <Col sm={3}>
             <Nav variant='pills' className='flex-column'>
+              <Nav.Item>
+                <Nav.Link eventKey='summary'>Summary</Nav.Link>
+              </Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey='products'>Products</Nav.Link>
               </Nav.Item>
@@ -25,6 +29,9 @@ function AdminDashBoardPage() {
           </Col>
           <Col sm={9}>
             <Tab.Content>
+              <Tab.Pane eventKey='summary'>
+                <SummaryComponent />
+              </Tab.Pane>
               <Tab.Pane eventKey='products'>
                 <ProductComponent />
               </Tab.Pane>
