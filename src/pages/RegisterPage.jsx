@@ -1,8 +1,7 @@
-import { GoogleOutlined } from '@ant-design/icons';
+
 import { Alert, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signUpWithGoogle } from '../Firebase';
 import loginImage from '../assets/image/login.jpg';
 import * as message from '../components/MessageComponent';
 import { useRegisterMutation } from '../services/appApi';
@@ -138,12 +137,6 @@ const RegisterPage = () => {
               Back to Login page
             </p>
           </Form>
-          <div className='text-center'>
-            <button onClick={signUpWithGoogle}>
-              <GoogleOutlined />
-              Sign In With Google
-            </button>
-          </div>
         </div>
       </div>
     </div>

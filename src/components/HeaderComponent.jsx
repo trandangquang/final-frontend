@@ -477,7 +477,7 @@ const HeaderComponent = () => {
                             My orders
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            onClick={() => navigate(`user/${user._id}/profile`)}
+                            onClick={() => navigate(`/user/${user._id}/profile`)}
                           >
                             My Profile
                           </NavDropdown.Item>

@@ -1,22 +1,25 @@
-
+import { Button, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import axios from '../axios';
 import LoadingComponent from './LoadingComponent';
 import PaginationComponent from './PaginationComponent';
-import { Button, Popconfirm } from 'antd';
-import { useNavigate } from 'react-router-dom';
-
 
 const UserComponent = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const confirm = (_id) => {
-    axios.delete(`users/${_id}`).then(({data})=> {
-      console.log('data', data)
-    })
+  const confirm = async (_id) => {
+    await axios.delete(`users/${_id}`).then(({ data }) => {
+      console.log('data', data);
+    });
+
+    await axios.get('/users').then(({ data }) => {
+      setLoading(false);
+      setUsers(data);
+    });
   };
   const cancel = (id) => {
     console.log(id);
@@ -43,11 +46,7 @@ const UserComponent = () => {
     return <h1 className='text-center pt-4'>No users yet</h1>;
   }
 
-  const TableRow = ({
-    _id,
-    name,
-    email
-  }) => {
+  const TableRow = ({ _id, name, email }) => {
     return (
       <tr>
         <td>{_id}</td>
@@ -58,7 +57,7 @@ const UserComponent = () => {
             <Popconfirm
               title='Delete the product'
               description='Are you sure to delete product?'
-              onConfirm={()=>confirm(_id)}
+              onConfirm={() => confirm(_id)}
               onCancel={cancel}
               okText='Yes'
               cancelText='No'

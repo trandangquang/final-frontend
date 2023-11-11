@@ -1,8 +1,7 @@
-import { GoogleOutlined } from '@ant-design/icons';
+
 import { Alert, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithGoogle } from '../Firebase';
 import loginImage from '../assets/image/login.jpg';
 import * as message from '../components/MessageComponent';
 import { useLoginMutation } from '../services/appApi';
@@ -118,12 +117,6 @@ const LoginPage = () => {
               to discover the digital world of Porsche.
             </p>
           </Form>
-          <div className='text-center'>
-            <button onClick={signInWithGoogle}>
-              <GoogleOutlined />
-              Sign In With Google
-            </button>
-          </div>
         </div>
       </div>
     </div>
