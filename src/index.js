@@ -13,11 +13,11 @@ const persistedStore = persistStore(store)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
+    {/* <React.StrictMode> */}
       <PersistGate loading={<div>Loading...</div>} persistor={persistedStore}>
         <App />
       </PersistGate>
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </Provider>
 );
 

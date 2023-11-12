@@ -42,7 +42,7 @@ const UserComponent = () => {
     return <LoadingComponent />;
   }
 
-  if (users.length === 0) {
+  if (users?.length === 0) {
     return <h1 className='text-center pt-4'>No users yet</h1>;
   }
 

@@ -1,6 +1,6 @@
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge, Button, Divider, Dropdown } from 'antd';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +31,8 @@ import porschebgboxster from '../assets/image/porsche-bg.jpg';
 import styleedition from '../assets/image/style-edition-718.png';
 import taycancross from '../assets/image/taycan-cross.png';
 import taycan from '../assets/image/taycan.png';
-import { logout } from '../redux/userSlice';
+import axios from '../axios';
+import { logout, resetNotifications } from '../redux/userSlice';
 
 const items = [
   {
@@ -401,10 +402,28 @@ const HeaderComponent = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const bellRef = useRef(null);
+  const notificationRef = useRef(null);
+  const [bellPos, setBellPos] = useState({});
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
+  };
+
+  const unreadNotifications = user?.notifications?.reduce((acc, current) => {
+    if (current.status === 'unread') return acc + 1;
+    return acc;
+  }, 0);
+
+  const handleToggleNotifications = () => {
+    const position = bellRef.current.getBoundingClientRect();
+    setBellPos(position);
+    notificationRef.current.style.display =
+      notificationRef.current.style.display === 'block' ? 'none' : 'block';
+    dispatch(resetNotifications());
+    if (unreadNotifications > 0)
+      axios.post(`/users/${user._id}/updateNotifications`);
   };
 
   return (
@@ -436,65 +455,95 @@ const HeaderComponent = () => {
           </div>
         </Dropdown>
 
-        <div className=''>
-          <div>
-            <div className='flex items-center '>
-              {!user ? (
-                <span
-                  className='cursor-pointer'
-                  onClick={() => navigate('/login')}
-                >
-                  Login
-                </span>
-              ) : (
-                <>
-                  {user && !user.isAdmin && (
-                    <div onClick={() => navigate('/cart')}>
-                      <Badge count={user.cart.count}>
-                        <ShoppingCartOutlined className='text-3xl cursor-pointer' />
-                      </Badge>
-                    </div>
-                  )}
-                  <div>
-                    <NavDropdown title={`${user.email}`}>
-                      {user.isAdmin ? (
-                        <>
-                          <NavDropdown.Item onClick={() => navigate('/admin')}>
-                            Dashboard
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            onClick={() => navigate('/products')}
-                          >
-                            Create Product
-                          </NavDropdown.Item>
-                        </>
-                      ) : (
-                        <>
-                          <NavDropdown.Item onClick={() => navigate('/cart')}>
-                            Cart
-                          </NavDropdown.Item>
-                          <NavDropdown.Item onClick={() => navigate('/orders')}>
-                            My orders
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            onClick={() => navigate(`/user/${user._id}/profile`)}
-                          >
-                            My Profile
-                          </NavDropdown.Item>
-                        </>
-                      )}
-
-                      <NavDropdown.Divider />
-                      <div className='text-center'>
-                        <Button type='primary' danger onClick={handleLogout}>
-                          Logout
-                        </Button>
-                      </div>
-                    </NavDropdown>
+        <div>
+          <div className='flex items-center '>
+            {!user ? (
+              <span
+                className='cursor-pointer'
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </span>
+            ) : (
+              <>
+                {user && !user.isAdmin && (
+                  <div onClick={() => navigate('/cart')}>
+                    <Badge count={user.cart.count}>
+                      <ShoppingCartOutlined className='text-3xl cursor-pointer' />
+                    </Badge>
                   </div>
-                </>
-              )}
-            </div>
+                )}
+
+                <div
+                  className='relative flex p-2'
+                  onClick={handleToggleNotifications}
+                >
+                  <Badge count={unreadNotifications || null}>
+                    <BellOutlined
+                      ref={bellRef}
+                      className='text-3xl cursor-pointer'
+                    />
+                  </Badge>
+                </div>
+                <div>
+                  <NavDropdown title={`${user.email}`}>
+                    {user.isAdmin ? (
+                      <>
+                        <NavDropdown.Item onClick={() => navigate('/admin')}>
+                          Dashboard
+                        </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => navigate('/products')}>
+                          Create Product
+                        </NavDropdown.Item>
+                      </>
+                    ) : (
+                      <>
+                        <NavDropdown.Item onClick={() => navigate('/cart')}>
+                          Cart
+                        </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => navigate('/orders')}>
+                          My orders
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          onClick={() => navigate(`/user/${user._id}/profile`)}
+                        >
+                          My Profile
+                        </NavDropdown.Item>
+                      </>
+                    )}
+
+                    <NavDropdown.Divider />
+                    <div className='text-center'>
+                      <Button type='primary' danger onClick={handleLogout}>
+                        Logout
+                      </Button>
+                    </div>
+                  </NavDropdown>
+                </div>
+              </>
+            )}
+          </div>
+          <div
+            className=' bg-white p-5 max-h-[200px] overflow-y-scroll border-solid w-[300px] z-[99] absolute'
+            ref={notificationRef}
+          >
+            {user?.notifications?.length > 0 ? (
+              user?.notifications?.map((notification) => (
+                <p
+                  className={`notification-${notification.status} w-full bg-green-300`}
+                >
+                  {notification.message}
+                  <br />
+                  <span>
+                    {notification.time.split('T')[0] +
+                      ' ' +
+                      notification.time.split('T')[1]}
+                  </span>
+                </p>
+              ))
+            ) : (
+              <div>No notifications</div>
+            )}
           </div>
         </div>
       </div>
