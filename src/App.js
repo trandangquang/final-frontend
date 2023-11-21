@@ -21,7 +21,7 @@ function App() {
       }
     })
     socket.off('new-order').on('new-order', (msgObj)=> {
-      if(user.isAdmin){
+      if(user?.isAdmin){
         dispatch(addNotification(msgObj))
         console.log('addNotification(msgObj)', addNotification(msgObj));
       }

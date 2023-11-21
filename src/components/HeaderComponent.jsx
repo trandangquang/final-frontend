@@ -467,24 +467,26 @@ const HeaderComponent = () => {
             ) : (
               <>
                 {user && !user.isAdmin && (
-                  <div onClick={() => navigate('/cart')}>
-                    <Badge count={user.cart.count}>
-                      <ShoppingCartOutlined className='text-3xl cursor-pointer' />
-                    </Badge>
-                  </div>
+                  <>
+                    <div onClick={() => navigate('/cart')}>
+                      <Badge count={user.cart.count}>
+                        <ShoppingCartOutlined className='text-3xl cursor-pointer' />
+                      </Badge>
+                    </div>
+                    <div
+                      className='relative flex p-2'
+                      onClick={handleToggleNotifications}
+                    >
+                      <Badge count={unreadNotifications || null}>
+                        <BellOutlined
+                          ref={bellRef}
+                          className='text-3xl cursor-pointer'
+                        />
+                      </Badge>
+                    </div>
+                  </>
                 )}
 
-                <div
-                  className='relative flex p-2'
-                  onClick={handleToggleNotifications}
-                >
-                  <Badge count={unreadNotifications || null}>
-                    <BellOutlined
-                      ref={bellRef}
-                      className='text-3xl cursor-pointer'
-                    />
-                  </Badge>
-                </div>
                 <div>
                   <NavDropdown title={`${user.email}`}>
                     {user.isAdmin ? (
@@ -524,26 +526,26 @@ const HeaderComponent = () => {
             )}
           </div>
           <div
-            className=' bg-white p-5 max-h-[200px] overflow-y-scroll border-solid w-[300px] z-[99] absolute'
+            className=' bg-white p-5 max-h-[200px] overflow-y-scroll border-solid w-[300px] z-[99] absolute hidden'
             ref={notificationRef}
+            style={{
+              top: bellPos.top + 30,
+              left: bellPos.left,
+            }}
           >
-            {user?.notifications?.length > 0 ? (
-              user?.notifications?.map((notification) => (
-                <p
-                  className={`notification-${notification.status} w-full bg-green-300`}
-                >
-                  {notification.message}
-                  <br />
-                  <span>
-                    {notification.time.split('T')[0] +
-                      ' ' +
-                      notification.time.split('T')[1]}
-                  </span>
-                </p>
-              ))
-            ) : (
-              <div>No notifications</div>
-            )}
+            {user?.notifications?.map((notification) => (
+              <p
+                className={`notification-${notification.status} w-full bg-green-300`}
+              >
+                {notification.message}
+                <br />
+                <span>
+                  {notification.time.split('T')[0] +
+                    ' ' +
+                    notification.time.split('T')[1]}
+                </span>
+              </p>
+            ))}
           </div>
         </div>
       </div>

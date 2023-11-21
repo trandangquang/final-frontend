@@ -44,6 +44,7 @@ const ProfilePage = () => {
       }
     });
   };
+  
   return (
     <div className='px-44 pt-3'>
       <div className='px-[300px]'>
@@ -52,7 +53,7 @@ const ProfilePage = () => {
             <h1 className='mt-4 text-center'>My Profile</h1>
             {isSuccess && (
               <Alert
-                message='The product has been updated successfully'
+                message='The profile has been updated successfully'
                 type='success'
                 showIcon
               />

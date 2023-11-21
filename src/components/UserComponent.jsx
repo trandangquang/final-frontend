@@ -55,8 +55,8 @@ const UserComponent = () => {
         <td>
           <div>
             <Popconfirm
-              title='Delete the product'
-              description='Are you sure to delete product?'
+              title='Delete the user'
+              description='Are you sure to delete user?'
               onConfirm={() => confirm(_id)}
               onCancel={cancel}
               okText='Yes'
@@ -98,7 +98,7 @@ const UserComponent = () => {
             data={users}
             RenderComponent={TableRow}
             pageLimit={1}
-            dataLimit={10}
+            dataLimit={5}
             tablePagination={true}
           />
         </tbody>
