@@ -21,7 +21,9 @@ const SummaryComponent = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:8080/orders/stats');
+        const res = await axios.get(
+          'https://carstore-api.onrender.com/orders/stats'
+        );
         res.data.sort(compare);
         setOrders(res.data);
       } catch (e) {
@@ -35,7 +37,7 @@ const SummaryComponent = () => {
     async function fetchData() {
       try {
         const res = await axios.get(
-          'http://localhost:8080/orders/income/stats'
+          'https://carstore-api.onrender.com/orders/income/stats'
         );
         res.data.sort(compare);
         setIncome(res.data);

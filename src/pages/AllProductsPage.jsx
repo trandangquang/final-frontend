@@ -7,7 +7,7 @@ import { updateProducts } from '../redux/productSlice';
 
 const AllProductsPage = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {

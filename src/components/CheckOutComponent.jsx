@@ -44,15 +44,13 @@ function CheckoutForm() {
     }
     updateUser({ id, name, address, phone }).then(({ data }) => {
       if (data) {
-        setTimeout(() => {
-          // navigate('/');
-        }, 1000);
+        return data;
       }
     });
     if (!stripe || !elements || user.cart.count <= 0) return;
     setPaying(true);
     const { client_secret } = await fetch(
-      'http://localhost:8080/create-payment',
+      'https://carstore-api.onrender.com/create-payment',
       {
         method: 'POST',
         headers: {
@@ -158,4 +156,3 @@ function CheckoutForm() {
 }
 
 export default CheckoutForm;
-

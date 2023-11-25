@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import appApi from "../services/appApi";
+import { createSlice } from '@reduxjs/toolkit';
+import appApi from '../services/appApi';
 
-const initialState = []
+const initialState = [];
 
 export const productSlice = createSlice({
   name: 'products',
@@ -27,5 +27,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const {updateProducts} = productSlice.actions
-export default productSlice.reducer
+export const { updateProducts } = productSlice.actions;
+export default productSlice.reducer;

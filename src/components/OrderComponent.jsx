@@ -1,11 +1,11 @@
+import { EyeOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Badge, Modal, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import axios from '../axios';
 import LoadingComponent from './LoadingComponent';
 import PaginationComponent from './PaginationComponent';
-import { Button } from 'antd';
-import { EyeOutlined } from '@ant-design/icons';
 
 const OrderComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -21,7 +21,7 @@ const OrderComponent = () => {
       .patch(`/orders/${orderId}/mark-shipped`, { ownerId })
       .then(({ data }) => setOrders(data))
       .catch((e) => console.log(e));
-  }
+  };
 
   const showOrder = (productsObj) => {
     let productsToShow = products.filter((product) => productsObj[product._id]);
@@ -34,7 +34,7 @@ const OrderComponent = () => {
     console.log(productsToShow);
     setShow(true);
     setOrderToShow(productsToShow);
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -57,7 +57,15 @@ const OrderComponent = () => {
     return <h1 className='text-center pt-4'>No orders yet</h1>;
   }
 
-  const TableRow = ({ _id, count, owner, total, status, products, address }) => {
+  const TableRow = ({
+    _id,
+    count,
+    owner,
+    total,
+    status,
+    products,
+    address,
+  }) => {
     return (
       <tr>
         <td>{_id}</td>
@@ -85,7 +93,7 @@ const OrderComponent = () => {
         </td>
       </tr>
     );
-  }
+  };
 
   return (
     <div>
@@ -135,6 +143,6 @@ const OrderComponent = () => {
       </Modal>
     </div>
   );
-}
+};
 
 export default OrderComponent;

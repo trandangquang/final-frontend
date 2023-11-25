@@ -10,7 +10,6 @@ import {
   YAxis,
 } from 'recharts';
 import axios from '../axios';
-import { Loading3QuartersOutlined } from '@ant-design/icons';
 import LoadingComponent from './LoadingComponent';
 
 const Chart = () => {
@@ -29,10 +28,10 @@ const Chart = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setLoading(true)
+      setLoading(true);
       try {
         const res = await axios.get(
-          'http://localhost:8080/orders/week-sales/stats'
+          'https://carstore-api.onrender.com/orders/week-sales/stats'
         );
         res.data.sort(compare);
 
@@ -47,15 +46,14 @@ const Chart = () => {
           ];
           return {
             day: DAYS[item._id - 1],
-            amount: item.total
-          }
+            amount: item.total,
+          };
         });
-        setSales(newData)
-        setLoading(false)
+        setSales(newData);
+        setLoading(false);
       } catch (e) {
         console.log(e);
         setLoading(false);
-
       }
     }
     fetchData();

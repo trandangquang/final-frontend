@@ -1,5 +1,6 @@
 import { BellOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge, Button, Divider, Dropdown } from 'antd';
+import moment from 'moment/moment';
 import React, { useRef, useState } from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useDispatch, useSelector } from 'react-redux';
@@ -526,7 +527,7 @@ const HeaderComponent = () => {
             )}
           </div>
           <div
-            className=' bg-white p-5 max-h-[200px] overflow-y-scroll border-solid w-[300px] z-[99] absolute hidden'
+            className=' bg-white p-5 max-h-[200px] overflow-y-scroll border-solid w-fit z-[99] absolute hidden'
             ref={notificationRef}
             style={{
               top: bellPos.top + 30,
@@ -534,17 +535,18 @@ const HeaderComponent = () => {
             }}
           >
             {user?.notifications?.map((notification) => (
-              <p
-                className={`notification-${notification.status} w-full bg-green-300`}
-              >
-                {notification.message}
-                <br />
-                <span>
-                  {notification.time.split('T')[0] +
-                    ' ' +
-                    notification.time.split('T')[1]}
-                </span>
-              </p>
+              <>
+                <p
+                  className={`notification-${notification.status} m-0 p-3 text-justify bg-green-300`}
+                >
+                  {notification.message}
+                  <br />
+                  <span>
+                    {moment(notification.time).format('DD-MM-YYYY HH:mm')}
+                  </span>
+                </p>
+                <div className='border border-solid border-white' />
+              </>
             ))}
           </div>
         </div>

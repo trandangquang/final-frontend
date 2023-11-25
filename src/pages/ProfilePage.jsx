@@ -1,20 +1,17 @@
 import { Alert, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from '../axios';
 import { useUpdateUserMutation } from '../services/appApi';
 
 const ProfilePage = () => {
-  const user = useSelector((state) => state.user);
   const { id } = useParams();
 
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();
   const [updateUser, { isLoading, error, isSuccess, isError }] =
     useUpdateUserMutation();
 
@@ -24,7 +21,7 @@ const ProfilePage = () => {
       .then(({ data }) => {
         const user = data.user;
         setName(user.name);
-        setEmail(user.email)
+        setEmail(user.email);
         setAddress(user.address);
         setPhone(user.phone);
       })
@@ -38,13 +35,11 @@ const ProfilePage = () => {
     }
     updateUser({ id, name, address, phone }).then(({ data }) => {
       if (data) {
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
+        return data;
       }
     });
   };
-  
+
   return (
     <div className='px-44 pt-3'>
       <div className='px-[300px]'>
@@ -98,7 +93,7 @@ const ProfilePage = () => {
             </Form.Group>
 
             <Form.Group className='text-center'>
-              <Button type='submit' disabled={isLoading || isSuccess}>
+              <Button type='submit' disabled={isLoading}>
                 Update Profile
               </Button>
             </Form.Group>
