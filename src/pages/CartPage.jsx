@@ -27,7 +27,6 @@ const CartPage = () => {
   const [removeFromCart, { isLoading, isSuccess }] =
     useRemoveFromCartMutation();
 
-  const [number, setNumber] = useState();
 
   useEffect(() => {
     if (isSuccess) {
