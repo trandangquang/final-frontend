@@ -36,6 +36,7 @@ const HomePage = () => {
         <div className='grid grid-cols-5 justify-start items-center pt-3 font-normal text-2xl gap-1'>
           {categories.map((category) => (
             <div
+            className='cursor-pointer'
               onClick={() =>
                 navigate(`/category/${category.name.toLocaleLowerCase()}`)
               }

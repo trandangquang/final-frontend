@@ -2,9 +2,8 @@ import { Card } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 const CardComponent = ({ _id, category, name, price, pictures }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div>
       <Card
