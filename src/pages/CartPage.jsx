@@ -2,7 +2,7 @@ import { CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Alert } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import CheckOutFormComponent from '../components/CheckOutComponent';
@@ -27,6 +27,8 @@ const CartPage = () => {
   const [removeFromCart, { isLoading, isSuccess }] =
     useRemoveFromCartMutation();
 
+  const [number, setNumber] = useState();
+
   useEffect(() => {
     if (isSuccess) {
       message.success();
@@ -34,8 +36,9 @@ const CartPage = () => {
   }, [isSuccess]);
 
   const handleDecrease = (product) => {
+    console.log(product);
     const quantity = user.cart.count;
-    if (quantity <= 0) {
+    if (quantity <= 1) {
       <Alert
         className='text-center text-lg'
         message='Cannot be reduced anymore'
@@ -44,7 +47,7 @@ const CartPage = () => {
     }
     decreaseCart(product);
   };
-  
+
   return (
     <div className='min-h-[95vh] px-44'>
       <div className='grid gap-44 grid-cols-2'>

@@ -9,19 +9,19 @@ function OrderPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-      setLoading(true);
-      axios
-        .get(`/users/${user._id}/orders`)
-        .then(({ data }) => {
-          setLoading(false);
-          setOrders(data);
-        })
-        .catch((e) => {
-          setLoading(false);
-          console.log(e);
-        });
-    }, []);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/users/${user._id}/orders`)
+      .then(({ data }) => {
+        setLoading(false);
+        setOrders(data);
+      })
+      .catch((e) => {
+        setLoading(false);
+        console.log(e);
+      });
+  }, [user?.notifications]);
 
   if (loading) {
     return <LoadingComponent />;

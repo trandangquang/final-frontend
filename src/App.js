@@ -13,7 +13,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const socket = io('ws://carstore-api.onrender.com');
+    const socket = io('wss://carstore-api.onrender.com');
     socket.off('notification').on('notification', (msgObj, user_id) => {
       console.log(user_id);
       if (user_id === user._id) {
